@@ -5,27 +5,36 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux"; 
 
 import { 
+    NavWrapper,
     UnloggedNavWrapper,
     LoggedWrapper,
     SignInButton,
     RegisterButton,
     ButtonsSet,
     DiaryButton,
-    CalculatorButon
+    CalculatorButon,
+    MenuBtnWrapper,
+    LoggedUserMenu,
+    LoggedUserName,
+    LoggedUserExit,
+    VerticalDeviderNav
 } from "./NavigationStyled";
+
+import menuBtn from "../../assets/Header/menuBtn.svg"
 
 export const Navigation = () => {
 
     const isUserLogged = useSelector(state => state.userInfo.userLogged);
+    const userInfo = useSelector(state => state.userInfo.user);
 
     const navigate = useNavigate();
 
     return(
-        <nav>
+        <NavWrapper>
             {
                 isUserLogged ?
                 <LoggedWrapper>
-                    <ButtonsSet>
+                    <ButtonsSet isUserLogged = {isUserLogged}>
                         <DiaryButton>
                             Diary
                         </DiaryButton>
@@ -33,6 +42,18 @@ export const Navigation = () => {
                             Calculator
                         </CalculatorButon>
                     </ButtonsSet>
+                    <LoggedUserMenu>
+                        <LoggedUserName>
+                            {userInfo.username}
+                        </LoggedUserName>
+                        <VerticalDeviderNav />
+                        <LoggedUserExit>
+                            Exit
+                        </LoggedUserExit>
+                    </LoggedUserMenu>
+                    <MenuBtnWrapper>
+                        <img src = {menuBtn} />
+                    </MenuBtnWrapper>
                 </LoggedWrapper>
                 
                 :
@@ -48,7 +69,7 @@ export const Navigation = () => {
                     </ButtonsSet>
                 </UnloggedNavWrapper>
             }
-        </nav>
+        </NavWrapper>
     )
 }
 

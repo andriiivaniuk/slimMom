@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <GlobalStylesReset />
-      <Header isLoggedIn = {false}/>
+      <Header/>
       <Router />
     </div>
   );

@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useNavigate } from "react-router";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { 
     LoginWrapper,
@@ -23,6 +23,8 @@ import {
 import { fetchLogin } from "../../ducks/userInfo/userInfoActions";
 
 export const LoginForm = () => {
+
+    const userInfo = useSelector(state => state.userInfo);
 
     const [isEmailOk, setIsEmailOk] = useState(true);
     const [isPassOk, setIsPassOk] = useState(true);
@@ -69,6 +71,12 @@ export const LoginForm = () => {
             }))
         }
     }
+
+    useEffect(() => {
+        if (passRef.current.value !== "") {
+            navigate("/");
+        }
+    }, [userInfo]);
 
     return (
         <div>

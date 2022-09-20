@@ -9,10 +9,11 @@ import {
 export const FormWrapper = styled.div`
     max-width: 608px;
     padding-left: 16px;
-    padding-top: 150px;
+    padding-top: 300px;
 
     @media (max-width: 768px) {
         max-width: 704px;
+        padding-top: 200px;
     }
 `
 

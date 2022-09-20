@@ -18,6 +18,8 @@ export const LogoWrapper = styled.div`
 export const LogoImgWrapper = styled.div`
     display: block;
     cursor: pointer;
+    width: 46px;
+    height: 44px;
 `
 
 export const LogoTitle = styled.div`

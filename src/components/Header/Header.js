@@ -9,14 +9,14 @@ import {
     VerticalDevider
 } from "./HeaderStyled"
 
-export const Header = ({isLoggedIn}) => {
+export const Header = () => {
     return (
         <header>
             <HeaderWrapper>
                 <Logo />
                 <VerticalDevider />
-                <UserInfo isLoggedIn = {isLoggedIn}/>
-                <Navigation isLoggedIn = {isLoggedIn}/>
+                <UserInfo/>
+                <Navigation/>
             </HeaderWrapper>
         </header>
     )

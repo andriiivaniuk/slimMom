@@ -5,6 +5,9 @@ import {
 } from "../../assets/themes/colors";
 
 export const HeaderWrapper = styled.div`
+
+    position: absolute;
+
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -15,6 +18,7 @@ export const HeaderWrapper = styled.div`
     padding-bottom: 20px;
     padding-top: 20px;
     padding-left: 16px;
+
 
     @media (min-width: 768px) {
         padding-top: 80px;
