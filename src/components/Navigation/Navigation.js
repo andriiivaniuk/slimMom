@@ -1,24 +1,38 @@
 import React from "react";
+
 import { useNavigate } from "react-router";
+
+import { useSelector } from "react-redux"; 
 
 import { 
     UnloggedNavWrapper,
     LoggedWrapper,
     SignInButton,
     RegisterButton,
-    ButtonsSet
+    ButtonsSet,
+    DiaryButton,
+    CalculatorButon
 } from "./NavigationStyled";
 
-export const Navigation = ({isLoggedIn}) => {
+export const Navigation = () => {
+
+    const isUserLogged = useSelector(state => state.userInfo.userLogged);
 
     const navigate = useNavigate();
 
     return(
         <nav>
             {
-                isLoggedIn ?
+                isUserLogged ?
                 <LoggedWrapper>
-
+                    <ButtonsSet>
+                        <DiaryButton>
+                            Diary
+                        </DiaryButton>
+                        <CalculatorButon>
+                            Calculator
+                        </CalculatorButon>
+                    </ButtonsSet>
                 </LoggedWrapper>
                 
                 :

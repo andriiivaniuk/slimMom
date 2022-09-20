@@ -1,9 +1,14 @@
 import React from "react";
 
-export const UserInfo = ({isLoggedIn}) => {
+import { useSelector } from "react-redux";
+
+export const UserInfo = () => {
+
+    const isUserLogged = useSelector(state => state.userInfo.userLogged);
+
     return(
         <div>
-            {isLoggedIn && <>user Info</>}
+            {/* {isUserLogged && <>user Info</>} */}
         </div>
     )
 }

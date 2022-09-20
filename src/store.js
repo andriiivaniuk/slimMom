@@ -4,16 +4,21 @@ import thunk from "redux-thunk"
 
 import reducers from "./ducks";
 
+import storageMiddleware from "./middlewares/storageMiddleware";
+
 const getInitialStore = () => {
     return {
-        init: {}
+        init: {},
+        userInfo: {
+            userLogged: false
+        }
     }
 }
 
 export const store = legacy_createStore(
     reducers,
     getInitialStore(),
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk, storageMiddleware))
 );
 
 export default store;

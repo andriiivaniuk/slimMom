@@ -82,6 +82,17 @@ export const BloodTypeSelectedDot = styled.div`
     top: 4px;
     position: absolute;
 `
+export const ButtonArea = styled.div`
+    display: flex;
+    justify-content: center;
+    justify-content: flex-end;
+    padding-right: 90px;
+
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+        padding-right: 0px;
+    }
+`
 
 export const StartLosingWeighBtn = styled.button`
     margin-top: 73px;

@@ -1,6 +1,10 @@
 import React, {useEffect, useState } from "react";
 
+import { useNavigate } from "react-router"
+
 import { disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
+
+import withLoader from "../../hocs/withLoader/withLoader";
 
 import { 
     ModalBackground,
@@ -21,8 +25,14 @@ import {
 import { StartLosingWeighBtn } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
 import closeCross from "../../assets/ModalWindow/closeCross.svg";
+import { useSelector } from "react-redux";
 
 export const ModalWindow = ({setModalVisibility, children}) => {
+
+    const navigate = useNavigate();
+
+    const dailyKcal = useSelector(state => state.userInfo.lastDailyIntakeData.dailyKcal);
+    const notAllowedFoodArr = useSelector(state => state.userInfo.lastDailyIntakeData.notAllowedFoods);
 
     const [topOffset, setTopOffset] = useState(Math.abs(document.querySelector("body").getBoundingClientRect().top));
 
@@ -70,7 +80,7 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                     </ModalTitle>
                     <ModalEnergyValSet>
                         <ModalEnergyVal>
-                            2800
+                            {dailyKcal}
                         </ModalEnergyVal>
                         <ModalEnergyUnitsVal>
                             kkal
@@ -81,21 +91,14 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                             Foods you should not eat
                         </FoodsToAvoidTitle>
                         <BadFoodsList>
-                            <BadFoodItem>
-                                1. Flour products
-                            </BadFoodItem>
-                            <BadFoodItem>
-                                2. Milk
-                            </BadFoodItem>
-                            <BadFoodItem>
-                                3. Red meat
-                            </BadFoodItem>
-                            <BadFoodItem>
-                                4. Smoked meat
-                            </BadFoodItem>
+                            {notAllowedFoodArr.map((item, index) => {
+                                return <BadFoodItem key = {index}>
+                                    {item}
+                                </BadFoodItem>
+                            })}
                         </BadFoodsList>
                     </FoodsToAvoidSet>
-                    <StartLosingWeighBtn>
+                    <StartLosingWeighBtn onClick={() => navigate("/register")}>
                         Start losing weight
                     </StartLosingWeighBtn>
                 </ModalContentWrapper>
@@ -105,4 +108,4 @@ export const ModalWindow = ({setModalVisibility, children}) => {
     )
 }
 
-export default ModalWindow;
+export default withLoader(ModalWindow);

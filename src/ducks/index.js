@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-import initStoreReducer from "./initialStore/initialReducer";
+import { initStoreReducer } from "./initialStore";
+import { userInfoReducer } from "./userInfo";
 
 const reducers = combineReducers({
-    init: initStoreReducer
+    init: initStoreReducer,
+    userInfo: userInfoReducer
 });
 
 export default reducers;

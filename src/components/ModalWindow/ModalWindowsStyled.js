@@ -109,12 +109,15 @@ export const FoodsToAvoidTitle = styled.span`
 `
 
 export const BadFoodsList = styled.ol`
+    margin-top: 10px;
     padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 330px;
+    height: 150px;
     gap: 15px;
+    overflow-y: scroll;
 
 `
 export const BadFoodItem = styled.li`

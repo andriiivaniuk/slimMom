@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+
 import ModalWindow from "../ModalWindow/ModalWindow";
+
+import { fetchDailyKcalInfo } from "../../ducks/userInfo/userInfoActions";
 
 import {
     FormWrapper,
@@ -13,13 +17,18 @@ import {
     BloodTypeInputCircle,
     BloodTypeDigit,
     BloodTypeSelectedDot,
+    ButtonArea,
     StartLosingWeighBtn,
     ErrorMessage,
 } from "./DailyCaloriesFormStyled"
 
 export const DailyCaloriesForm = () => {
 
+    const dispatch = useDispatch();
     const [bloodType, setBloodType] = useState(1);
+
+    const [loading, setLoading] = useState(false);
+    const userInfo = useSelector(state => state.userInfo);
 
     const ageRef = useRef();
     const currentWeightRef = useRef();
@@ -33,9 +42,13 @@ export const DailyCaloriesForm = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    useEffect(() => {
+        setLoading(false);
+    }, [userInfo])
+
     const checkAge = () => {
         const age = ageRef.current.value;
-        if (age.match(/^100|[1-9]?\d$/)) {
+        if (age.match(/^100|[1-9]?\d$/) && age < 121) {
             setIsAgeOk(true);
         } else {
             setIsAgeOk(false);
@@ -83,6 +96,18 @@ export const DailyCaloriesForm = () => {
 
     const getModal = () => {
         if (checkInputDataOnBtnClick()) {
+
+            const formInfo = {
+                weight: currentWeightRef.current.value,
+                height: heightRef.current.value,
+                age: ageRef.current.value,
+                desiredWeight: desiredWeightRef.current.value,
+                bloodType: bloodType
+            }
+
+            setLoading(true);
+            dispatch(fetchDailyKcalInfo(formInfo));
+
             setIsModalOpen(true);
         }
     }
@@ -157,11 +182,13 @@ export const DailyCaloriesForm = () => {
                         </BloodTypeInput>
                     </InputSetItem>
                 </FormInputsSet>
-                <StartLosingWeighBtn onClick={() => getModal()}>
-                    Start losing weight
-                </StartLosingWeighBtn>
+                <ButtonArea>
+                    <StartLosingWeighBtn onClick={() => getModal()}>
+                        Start losing weight
+                    </StartLosingWeighBtn>
+                </ButtonArea>
             </FormWrapper>
-            {isModalOpen && <ModalWindow setModalVisibility={setIsModalOpen} />}
+            {isModalOpen && <ModalWindow setModalVisibility={setIsModalOpen} loading = {loading} />}
         </section>
     )
 }

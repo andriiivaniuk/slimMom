@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 
 import { useNavigate } from "react-router";
 
+import { useDispatch } from "react-redux";
+
 import { 
     LoginWrapper,
     LoginFormTitle,
@@ -18,6 +20,7 @@ import {
     ErrorMessage
 } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
+import { fetchLogin } from "../../ducks/userInfo/userInfoActions";
 
 export const LoginForm = () => {
 
@@ -25,6 +28,8 @@ export const LoginForm = () => {
     const [isPassOk, setIsPassOk] = useState(true);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const passRef = useRef();
     const emailRef = useRef();
 
@@ -44,6 +49,24 @@ export const LoginForm = () => {
             setIsPassOk(true);
         } else {
             setIsPassOk(false);
+        }
+    }
+
+    const checkInputData = () => {
+        if (isEmailOk && isPassOk && 
+            emailRef.current.value !== "" && passRef.current.value !=="" ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const handleLoginClick = () => {
+        if (checkInputData()) {
+            dispatch(fetchLogin({
+                email: emailRef.current.value,
+                password: passRef.current.value
+            }))
         }
     }
 
@@ -74,8 +97,8 @@ export const LoginForm = () => {
                     </InputSetItem>
                 </FormInputsSet>
                 <AuthButtonSet>
-                    <LoginBtn>
-                        Login
+                    <LoginBtn onClick={() => handleLoginClick()}>
+                        Sign in
                     </LoginBtn>
                     <RegisterBtn onClick={() => navigate("/register")}>
                         Register
