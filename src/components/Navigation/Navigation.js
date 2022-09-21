@@ -61,10 +61,10 @@ export const Navigation = () => {
                 isUserLogged ?
                 <LoggedWrapper>
                     <ButtonsSet isUserLogged = {isUserLogged}>
-                        <DiaryButton>
+                        <DiaryButton onClick={() => navigate("/diary")}>
                             Diary
                         </DiaryButton>
-                        <CalculatorButon>
+                        <CalculatorButon onClick={() => navigate("/")}>
                             Calculator
                         </CalculatorButon>
                     </ButtonsSet>
