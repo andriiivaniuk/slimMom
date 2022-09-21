@@ -1,8 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 
 import { useNavigate } from "react-router";
 
 import { useSelector } from "react-redux"; 
+
+import { disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
 import { 
     NavWrapper,
@@ -20,6 +22,8 @@ import {
     VerticalDeviderNav
 } from "./NavigationStyled";
 
+import { RightSideBar } from "../RightSideBar/RightSideBar";
+
 import menuBtn from "../../assets/Header/menuBtn.svg"
 
 export const Navigation = () => {
@@ -28,6 +32,28 @@ export const Navigation = () => {
     const userInfo = useSelector(state => state.userInfo.user);
 
     const navigate = useNavigate();
+    const [overlayMenuShown, setOverlayMenuShown] = useState(false);
+
+    const keyboardListener = (e) => {
+        if (e.key === "Escape") {
+            document.removeEventListener("keydown", keyboardListener);
+            setOverlayMenuShown(false);
+            enableBodyScroll(document.querySelector("body"));
+        }
+    }
+
+    const handleHamburgerClick = () => {
+        
+        if (!overlayMenuShown) {
+            document.addEventListener("keydown", keyboardListener);
+            disableBodyScroll(document.querySelector("body"));
+        } else {
+            document.removeEventListener("keydown", keyboardListener);
+            enableBodyScroll(document.querySelector("body"));
+        }
+
+        setOverlayMenuShown(!overlayMenuShown);
+    }
 
     return(
         <NavWrapper>
@@ -51,8 +77,8 @@ export const Navigation = () => {
                             Exit
                         </LoggedUserExit>
                     </LoggedUserMenu>
-                    <MenuBtnWrapper>
-                        <img src = {menuBtn} />
+                    <MenuBtnWrapper onClick={handleHamburgerClick}>
+                        <img src = {menuBtn} alt = "menu-button"/>
                     </MenuBtnWrapper>
                 </LoggedWrapper>
                 
@@ -69,6 +95,11 @@ export const Navigation = () => {
                     </ButtonsSet>
                 </UnloggedNavWrapper>
             }
+                {
+                    overlayMenuShown && 
+                    <RightSideBar
+                    handleHamburgerClick = {handleHamburgerClick}/>
+                }
         </NavWrapper>
     )
 }
