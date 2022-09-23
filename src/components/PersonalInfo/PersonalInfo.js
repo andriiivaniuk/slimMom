@@ -2,6 +2,12 @@ import React from "react";
 
 import { useSelector } from "react-redux";
 
+import { useDispatch } from "react-redux";
+
+import { getTodayDateString } from "../../utils/utils";
+
+import { fetchLoggedUserDayInfo } from "../../ducks/userInfo";
+
 import { 
     PersonalInfoWrapper,
     SummaryWrapper,
@@ -16,24 +22,35 @@ import {
     FoodNotRecommendedItem
 } from "./PersonalInfoStyled";
 
-const dailySummaryLineTitles = ["Left", "Consumed", "Daily rate", "n% of normal"];
+import { getTodayDateObj } from "../../utils/utils";
 
-const getDateStr = () => {
-    const date = new Date(Date.now());
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-}
+import { useEffect } from "react";
+
+const dailySummaryLineTitles = ["Left", "Consumed", "Daily rate", "n% of normal"];
 
 export const PersonalInfo = () => {
 
+    const dispatch = useDispatch();
+
+    const dayInfo = useSelector(state => state.userInfo.todaySummary);
+    const token = useSelector(state => state.userInfo.loginData.accessToken);
+
     const dailyRate = useSelector(state => state.userInfo.user.userData.dailyRate);
     const foodNotRec = useSelector(state => state.userInfo.user.userData.notAllowedProducts);
+
+    useEffect(() => {
+        console.log("fetching logged use day info")
+        if (Object.keys(dayInfo).length === 0 ) {
+            dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+        }
+    }, [])
 
     return (
         
             <PersonalInfoWrapper>
                 <SummaryWrapper>
                     <SummaryTitle>
-                        Summary for {getDateStr()}
+                        Summary for {getTodayDateString("/")}
                     </SummaryTitle>
                     <SummaryContent>
                         {
@@ -44,7 +61,10 @@ export const PersonalInfo = () => {
                                             {line}
                                         </SummaryContentLineName>
                                         <SummaryContentLineVal>
-                                            { line === "Daily rate" && dailyRate }
+                                            { line === "Daily rate" && dayInfo.dailyRate }
+                                            { line === "Consumed" && dayInfo.kcalConsumed }
+                                            { line === "Left" && dayInfo.kcalLeft}
+                                            { line === "n% of normal" && dayInfo.percentsOfDailyRate} 
                                         </SummaryContentLineVal>
                                     </SummaryContentLine> 
                                 )

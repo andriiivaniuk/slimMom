@@ -1,9 +1,14 @@
-import { getDailyKcalInfo, fetchDailyKcalInfo } from "./userInfoActions";
+import { 
+    getDailyKcalInfo,
+    fetchDailyKcalInfo,
+    fetchLoggedUserDayInfo
+} from "./userInfoActions";
 
 import userInfoReducer from "./userInfoReducer";
 
 export {
     fetchDailyKcalInfo,
     getDailyKcalInfo,
-    userInfoReducer
+    fetchLoggedUserDayInfo,
+    userInfoReducer,
 };

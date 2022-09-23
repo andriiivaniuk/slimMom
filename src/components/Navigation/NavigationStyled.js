@@ -63,19 +63,31 @@ export const ButtonsSet = styled.div`
 
 export const SignInButton = styled.button`
     cursor: pointer;
-    color: ${MODAL_LIST_TITLE_COLOR};
+    color: ${GREY_LABEL_INPUT};
+    :hover{
+        color: ${MODAL_LIST_TITLE_COLOR};
+    }
 `
 export const RegisterButton = styled.button`
     cursor: pointer;
     color: ${GREY_LABEL_INPUT};
+    :hover{
+        color: ${MODAL_LIST_TITLE_COLOR};
+    }
 `
 export const DiaryButton = styled.button`
     cursor: pointer;
-    color: ${MODAL_LIST_TITLE_COLOR};
+    color: ${GREY_LABEL_INPUT};
+    :hover{
+        color: ${MODAL_LIST_TITLE_COLOR};
+    }
 `
 export const CalculatorButon = styled.button`
     cursor: pointer;
     color: ${GREY_LABEL_INPUT};
+    :hover{
+        color: ${MODAL_LIST_TITLE_COLOR};
+    }
 `
 export const MenuBtnWrapper = styled.div`
     margin-right: 35px;

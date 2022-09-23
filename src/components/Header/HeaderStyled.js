@@ -19,7 +19,6 @@ export const HeaderWrapper = styled.div`
     padding-top: 20px;
     padding-left: 16px;
 
-
     @media (min-width: 768px) {
         padding-top: 80px;
         justify-content: stretch;
