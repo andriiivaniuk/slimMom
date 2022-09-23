@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import Spinner from "../Spinner/Spinner";
+
 import { 
     LoginWrapper,
     LoginFormTitle,
@@ -24,7 +26,10 @@ import { fetchLogin } from "../../ducks/userInfo/userInfoActions";
 
 export const LoginForm = () => {
 
+    const [isLogging, setIsLogging] = useState(false);
+
     const userInfo = useSelector(state => state.userInfo);
+    const isUserLogged = useSelector(state => state.userInfo.userLogged);
 
     const [isEmailOk, setIsEmailOk] = useState(true);
     const [isPassOk, setIsPassOk] = useState(true);
@@ -65,6 +70,7 @@ export const LoginForm = () => {
 
     const handleLoginClick = () => {
         if (checkInputData()) {
+            setIsLogging(true);
             dispatch(fetchLogin({
                 email: emailRef.current.value,
                 password: passRef.current.value
@@ -73,13 +79,14 @@ export const LoginForm = () => {
     }
 
     useEffect(() => {
-        if (passRef.current.value !== "") {
+        setIsLogging(false);
+        if (isUserLogged) {
             navigate("/");
         }
     }, [userInfo]);
 
     return (
-        <div>
+        <div> 
             <LoginWrapper>
                 <LoginFormTitle>
                     Sign In
@@ -113,6 +120,9 @@ export const LoginForm = () => {
                     </RegisterBtn>
                 </AuthButtonSet>
             </LoginWrapper>
+            {
+                isLogging && <Spinner />
+            }
         </div>
     )
 }

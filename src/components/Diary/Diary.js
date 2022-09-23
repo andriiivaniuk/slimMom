@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState, useRef }  from "react";
 
 import { useSelector } from "react-redux";
 
@@ -26,7 +26,10 @@ import calendarImg from "../../assets/Diary/calendar.svg";
 
 export const Diary = () => {
 
-    const [isSearching, setIsSearching] = useState(true);
+    const [isSearching, setIsSearching] = useState(false);
+    const [isLoadingFood, setIsLoadingFood] = useState(false);
+
+    const searchInputRef = useRef();
 
     const isUserLogged = useSelector(state => state.userInfo.userLogged);
     const navigate = useNavigate();
@@ -36,6 +39,16 @@ export const Diary = () => {
             navigate("/");
         }
     }, [])
+
+    const handleInputChange = () => {
+        const input = searchInputRef.current.value;
+        if (input.length > 0) {
+            setIsSearching(true);
+        } else {
+            setIsSearching(false);
+        }
+
+    }
 
     return (
         <DiaryWrapper>
@@ -48,8 +61,12 @@ export const Diary = () => {
                 </CalendarImgWrapper>
             </DateTitleSet>
             <InputSet>
-                <SearchNameInput type = "text" placeholder={"Enter product name:"} />
-                <GramsValInput type = "text" placeholder = {"Grams"}/>
+                <SearchNameInput
+                    onChange={handleInputChange}
+                    ref = {searchInputRef}
+                    placeholder={"Enter product name:"} 
+                    maxLength = {30} />
+                <GramsValInput  placeholder = {"Grams"}/>
                 <AddMealButton>
                     <PlusSign>
                         +
@@ -57,7 +74,7 @@ export const Diary = () => {
                 </AddMealButton>
             </InputSet>
             {
-                isSearching && <ProdSearchList loading = {false}/>
+                isSearching && <ProdSearchList loading = {isLoadingFood}/>
             }
             <ProductList>
                     

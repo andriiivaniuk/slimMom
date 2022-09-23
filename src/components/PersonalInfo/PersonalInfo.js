@@ -34,12 +34,9 @@ export const PersonalInfo = () => {
 
     const dayInfo = useSelector(state => state.userInfo.todaySummary);
     const token = useSelector(state => state.userInfo.loginData.accessToken);
-
-    const dailyRate = useSelector(state => state.userInfo.user.userData.dailyRate);
     const foodNotRec = useSelector(state => state.userInfo.user.userData.notAllowedProducts);
 
     useEffect(() => {
-        console.log("fetching logged use day info")
         if (Object.keys(dayInfo).length === 0 ) {
             dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
         }
