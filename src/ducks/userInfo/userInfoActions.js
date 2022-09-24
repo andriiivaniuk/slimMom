@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { getTodayDateObj } from '../../utils/utils';
 
 export const GET_DAILY_KCAL_INFO = "GET_DAILY_KCAL_INFO";
 export const SET_LOGGED_USER_INFO = "SET_LOGGED_USER_INFO";
 export const SET_LOGGED_USER_DAY_DATA = "SET_LOGGED_USER_DAY_DATA";
+export const SET_LAST_FOOD_SEARCH_RESULT = "SET_LAST_FOOD_SEARCH_RESULT";
+export const CLEAN_LAST_FOOD_SEARCH_RESULT = "CLEAN_LAST_FOOD_SEARCH_RESULT";
 
 export const fetchDailyKcalInfo = (formInfo) => {
     return dispatch => {
@@ -59,13 +62,28 @@ export const setLoggedUserDayInfo = (data) => {
     }
 }
 
+export const setLastFoodSearchResult = (data) => {
+    return {
+        type: SET_LAST_FOOD_SEARCH_RESULT,
+        payload: data
+    }
+}
+
+export const cleanLastFoodSearchResult = () => {
+    return {
+        type: CLEAN_LAST_FOOD_SEARCH_RESULT
+    }
+}
+
 export const fetchLoggedUserDayInfo = (date, token) => {
+    console.log(date);
     return dispatch => {
         axios
         .post(
             `https://slimmom-backend.goit.global/day/info`, date,  {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin' : '*',
+                    //'Content-Type': 'application/json',
                     'Authorization': token
                 }
             }
@@ -78,4 +96,66 @@ export const fetchLoggedUserDayInfo = (date, token) => {
         })
     }
     
+}
+
+export const fetchSearchedFood = (foodName, token) => {
+    return dispatch => {
+        axios
+        .get(`https://slimmom-backend.goit.global/product?search=${foodName}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin' : '*',
+                "Authorization": token
+            }
+        })
+        .then(result => {
+            dispatch(setLastFoodSearchResult(result))
+        })
+        .catch(error => {
+            dispatch(cleanLastFoodSearchResult());
+            alert(error.response.data.message);
+        })
+    }
+}
+
+export const sendEatenFoodToServer = (foodInfo, token) => {
+    return dispatch => {
+        axios
+        .post(`https://slimmom-backend.goit.global/day`, foodInfo, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                "Authorization": token
+            }
+        })
+        .then(result => {
+            console.log(result);
+            dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+        })
+        .catch(error => {
+            alert(error.response.data.message);
+        })
+    }
+}
+
+export const deleteFoodFromServer = (foodInfo, token) => {
+
+    return dispatch => {
+        axios
+        .delete(`https://slimmom-backend.goit.global/day`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': token,
+            },
+            data: foodInfo
+        })
+        .then(result => {
+            console.log(result);
+            dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+        })
+        .catch(error => {
+            alert(error.response.data.message);
+        })
+    }
 }

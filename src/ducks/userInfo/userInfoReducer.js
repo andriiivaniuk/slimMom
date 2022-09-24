@@ -1,7 +1,9 @@
 import { 
     GET_DAILY_KCAL_INFO,
     SET_LOGGED_USER_INFO,
-    SET_LOGGED_USER_DAY_DATA
+    SET_LOGGED_USER_DAY_DATA,
+    SET_LAST_FOOD_SEARCH_RESULT,
+    CLEAN_LAST_FOOD_SEARCH_RESULT
 } from "./userInfoActions";
 
 const userInfoReducer = (state = {}, action) => {
@@ -15,26 +17,39 @@ const userInfoReducer = (state = {}, action) => {
                 }
             }
 
-            case SET_LOGGED_USER_INFO:
-                return {
-                    ...state,
-                    user: action.payload.data.user,
-                    todaySummary: action.payload.data.todaySummary,
-                    loginData: {
-                        accessToken: action.payload.data.accessToken,
-                        refreshToken: action.payload.data.refreshToken,
-                        sid: action.payload.data.sid
-                    },
-                    userLogged: true
-                }
+        case SET_LOGGED_USER_INFO:
+            return {
+                ...state,
+                user: action.payload.data.user,
+                todaySummary: action.payload.data.todaySummary,
+                loginData: {
+                    accessToken: action.payload.data.accessToken,
+                    refreshToken: action.payload.data.refreshToken,
+                    sid: action.payload.data.sid
+                },
+                userLogged: true
+            }
 
-            case SET_LOGGED_USER_DAY_DATA:
-                console.log(action.payload);
-                return {
-                    ...state,
-                    todaySummary: action.payload.data
-                }
-        default: 
+        case SET_LOGGED_USER_DAY_DATA:
+            console.log(action.payload);
+            return {
+                ...state,
+                todaySummary: action.payload.data
+            }
+        case SET_LAST_FOOD_SEARCH_RESULT:
+            console.log(action.payload);
+            return {
+                ...state,
+                lastFoodSearchResult: action.payload.data
+            }
+
+        case CLEAN_LAST_FOOD_SEARCH_RESULT:
+            return {
+                ...state,
+                lastFoodSearchResult: {}
+            }
+
+        default:
             return state;
     }
 }

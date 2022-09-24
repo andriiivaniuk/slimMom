@@ -10,7 +10,8 @@ const getInitialStore = () => {
     return {
         init: {},
         userInfo: {
-            userLogged: false
+            userLogged: false,
+            lastFoodSearchResult: {}
         }
     }
 }

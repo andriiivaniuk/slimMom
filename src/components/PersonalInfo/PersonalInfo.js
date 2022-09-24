@@ -32,7 +32,11 @@ export const PersonalInfo = () => {
 
     const dispatch = useDispatch();
 
-    const dayInfo = useSelector(state => state.userInfo.todaySummary);
+    const dayInfo = useSelector(
+        state => 
+            Object.keys(state.userInfo.todaySummary).includes("daySummary") ?
+            state.userInfo.todaySummary.daySummary :  state.userInfo.todaySummary
+        );
     const token = useSelector(state => state.userInfo.loginData.accessToken);
     const foodNotRec = useSelector(state => state.userInfo.user.userData.notAllowedProducts);
 
@@ -50,18 +54,18 @@ export const PersonalInfo = () => {
                         Summary for {getTodayDateString("/")}
                     </SummaryTitle>
                     <SummaryContent>
-                        {
-                            dailySummaryLineTitles.map((line) => {
+                        {   Object.keys(dailySummaryLineTitles).length !== 0
+                            && dailySummaryLineTitles.map((line) => {
                                 return (                         
                                     <SummaryContentLine key = {line}>
                                         <SummaryContentLineName>
                                             {line}
                                         </SummaryContentLineName>
                                         <SummaryContentLineVal>
-                                            { line === "Daily rate" && dayInfo.dailyRate }
-                                            { line === "Consumed" && dayInfo.kcalConsumed }
-                                            { line === "Left" && dayInfo.kcalLeft}
-                                            { line === "n% of normal" && dayInfo.percentsOfDailyRate} 
+                                            { line === "Daily rate" && dayInfo?.dailyRate }
+                                            { line === "Consumed" && dayInfo?.kcalConsumed?.toFixed(2) }
+                                            { line === "Left" && dayInfo?.kcalLeft.toFixed(2)}
+                                            { line === "n% of normal" && dayInfo?.percentsOfDailyRate?.toFixed(2)}  
                                         </SummaryContentLineVal>
                                     </SummaryContentLine> 
                                 )
