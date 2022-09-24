@@ -64,7 +64,7 @@ export const PersonalInfo = () => {
                                         <SummaryContentLineVal>
                                             { line === "Daily rate" && dayInfo?.dailyRate }
                                             { line === "Consumed" && dayInfo?.kcalConsumed?.toFixed(2) }
-                                            { line === "Left" && dayInfo?.kcalLeft.toFixed(2)}
+                                            { line === "Left" && dayInfo?.kcalLeft?.toFixed(2)}
                                             { line === "n% of normal" && dayInfo?.percentsOfDailyRate?.toFixed(2)}  
                                         </SummaryContentLineVal>
                                     </SummaryContentLine> 
