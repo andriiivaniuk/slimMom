@@ -6,6 +6,7 @@ export const SET_LOGGED_USER_INFO = "SET_LOGGED_USER_INFO";
 export const SET_LOGGED_USER_DAY_DATA = "SET_LOGGED_USER_DAY_DATA";
 export const SET_LAST_FOOD_SEARCH_RESULT = "SET_LAST_FOOD_SEARCH_RESULT";
 export const CLEAN_LAST_FOOD_SEARCH_RESULT = "CLEAN_LAST_FOOD_SEARCH_RESULT";
+export const EXECUTE_LOGOUT_LOCALLY = "EXECUTE_LOGOUT_LOCALLY";
 
 export const fetchDailyKcalInfo = (formInfo) => {
     return dispatch => {
@@ -153,6 +154,32 @@ export const deleteFoodFromServer = (foodInfo, token) => {
         .then(result => {
             console.log(result);
             dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+        })
+        .catch(error => {
+            alert(error.response.data.message);
+        })
+    }
+}
+
+export const executeLogoutLocally = () => {
+    return {
+        type: EXECUTE_LOGOUT_LOCALLY
+    }
+}
+
+export const fetchLogout = (token) => {
+    return dispatch => {
+        axios
+        .post(`https://slimmom-backend.goit.global/auth/logout/`, {token: token}, {
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+        .then(result => {
+            console.log(result);
+            dispatch(executeLogoutLocally());
         })
         .catch(error => {
             alert(error.response.data.message);

@@ -1,4 +1,6 @@
-import { SET_LOGGED_USER_INFO } from "../ducks/userInfo/userInfoActions";
+import { 
+    SET_LOGGED_USER_INFO, EXECUTE_LOGOUT_LOCALLY 
+} from "../ducks/userInfo/userInfoActions";
 
 export const storageMiddleware = (store) => (next) => (action) => {
     next(action);
@@ -13,6 +15,13 @@ export const storageMiddleware = (store) => (next) => (action) => {
 
         sessionStorage.setItem("userInfo", JSON.stringify(store.getState().userInfo));
     }   
+
+    if (action.type === EXECUTE_LOGOUT_LOCALLY) {
+        document.cookie = "accessToken" + "=" + "";
+        document.cookie = "refreshToken" + "=" + "";
+
+        sessionStorage.clear();
+    }
 }
 
 export default storageMiddleware;

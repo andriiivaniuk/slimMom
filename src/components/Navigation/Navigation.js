@@ -2,7 +2,9 @@ import React, {useState} from "react";
 
 import { useNavigate } from "react-router";
 
-import { useSelector } from "react-redux"; 
+import { useSelector, useDispatch } from "react-redux"; 
+
+import { fetchLogout } from "../../ducks/userInfo/userInfoActions";
 
 import { disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
@@ -28,8 +30,11 @@ import menuBtn from "../../assets/Header/menuBtn.svg"
 
 export const Navigation = () => {
 
+    const dispatch = useDispatch();
+
     const isUserLogged = useSelector(state => state.userInfo.userLogged);
     const userInfo = useSelector(state => state.userInfo.user);
+    const token = useSelector(state => state.userInfo?.loginData?.accessToken);
 
     const navigate = useNavigate();
     const [overlayMenuShown, setOverlayMenuShown] = useState(false);
@@ -55,6 +60,12 @@ export const Navigation = () => {
         setOverlayMenuShown(!overlayMenuShown);
     }
 
+    const handleExitClick = () => {
+        if (isUserLogged && window.confirm("Do you want to log out?")) {
+            dispatch(fetchLogout(token))
+        }
+    }
+
     return(
         <NavWrapper>
             {
@@ -73,7 +84,7 @@ export const Navigation = () => {
                             {userInfo.username}
                         </LoggedUserName>
                         <VerticalDeviderNav />
-                        <LoggedUserExit>
+                        <LoggedUserExit onClick={handleExitClick}>
                             Exit
                         </LoggedUserExit>
                     </LoggedUserMenu>

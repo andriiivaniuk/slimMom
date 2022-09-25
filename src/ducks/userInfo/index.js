@@ -4,7 +4,8 @@ import {
     fetchLoggedUserDayInfo,
     fetchSearchedFood,
     cleanLastFoodSearchResult,
-    deleteFoodFromServer
+    deleteFoodFromServer,
+    fetchLogout
 } from "./userInfoActions";
 
 import userInfoReducer from "./userInfoReducer";
@@ -16,5 +17,6 @@ export {
     fetchSearchedFood,
     cleanLastFoodSearchResult,
     deleteFoodFromServer,
+    fetchLogout,
     userInfoReducer,
 };

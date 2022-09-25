@@ -3,7 +3,8 @@ import {
     SET_LOGGED_USER_INFO,
     SET_LOGGED_USER_DAY_DATA,
     SET_LAST_FOOD_SEARCH_RESULT,
-    CLEAN_LAST_FOOD_SEARCH_RESULT
+    CLEAN_LAST_FOOD_SEARCH_RESULT,
+    EXECUTE_LOGOUT_LOCALLY
 } from "./userInfoActions";
 
 const userInfoReducer = (state = {}, action) => {
@@ -31,13 +32,11 @@ const userInfoReducer = (state = {}, action) => {
             }
 
         case SET_LOGGED_USER_DAY_DATA:
-            console.log(action.payload);
             return {
                 ...state,
                 todaySummary: action.payload.data
             }
         case SET_LAST_FOOD_SEARCH_RESULT:
-            console.log(action.payload);
             return {
                 ...state,
                 lastFoodSearchResult: action.payload.data
@@ -47,6 +46,15 @@ const userInfoReducer = (state = {}, action) => {
             return {
                 ...state,
                 lastFoodSearchResult: {}
+            }
+
+        case EXECUTE_LOGOUT_LOCALLY:
+            return {
+                ...state,
+                loginData: {},
+                userLogged: false,
+                todaySummary: {},
+                user: {}
             }
 
         default:
