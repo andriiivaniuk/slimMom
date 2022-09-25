@@ -32,7 +32,7 @@ const dailySummaryLineTitles = ["Left", "Consumed", "Daily rate", "n% of normal"
 export const PersonalInfo = () => {
 
     const dispatch = useDispatch();
-    const [userDataPresent, setUserDataPresent] = useState(null);
+    const entryInfoExist = useSelector(state => state.userInfo.entryInfoExist);
 
     const dayInfo = useSelector(
         state => 
@@ -40,23 +40,18 @@ export const PersonalInfo = () => {
             state.userInfo.todaySummary.daySummary :  state.userInfo.todaySummary
         );
     const token = useSelector(state => state.userInfo.loginData.accessToken);
-    const foodNotRec = useSelector(state => state.userInfo.user.userData.notAllowedProducts);
+    const foodNotRec = useSelector(state => 
+        state.userInfo.user.userData.notAllowedProducts.length === 0 ?
+            state.userInfo?.lastDailyIntakeData?.notAllowedFoods :
+            state.userInfo.user?.userData?.notAllowedProducts
+        );
     const userData = useSelector(state => state.userInfo.user.userData);
 
     useEffect(() => {
-        if (userData.weight === 0 && userData.desiredWeight === 0 && userData.dailyRate === 0) {
-            setUserDataPresent(false);
-        } else {
-            setUserDataPresent(true);
+        if (entryInfoExist){
             dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
         }
-    }, []);
-
-    // useEffect(() => {
-    //     if (userDataPresent && Object.keys(dayInfo).length === 0 ) {
-    //         dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
-    //     }
-    // }, []);
+    }, [entryInfoExist]);
 
     return (
         
@@ -90,14 +85,14 @@ export const PersonalInfo = () => {
                     <FoodNotRecommendedTitle>
                         Food not recommended
                     </FoodNotRecommendedTitle>
-                {!userDataPresent ?
-                    <NoUserDataPresentDietText>
-                        Bad food for you will be shown here <br/>
+                
+                   {!foodNotRec && <NoUserDataPresentDietText>
+                        Bad food for you will be shown here. <br/>
                         Please send your info via Calculator form
-                    </NoUserDataPresentDietText>
-                    :
+                    </NoUserDataPresentDietText> }
+                    
                     <FoodNotRecommendedList>
-                        {foodNotRec.map((food, index) => {
+                        {foodNotRec && foodNotRec.map((food, index) => {
                             if (index < 8) return (
                                 <FoodNotRecommendedItem key={food}>
                                     {food}
@@ -105,7 +100,7 @@ export const PersonalInfo = () => {
                             )
                         })}
                 </FoodNotRecommendedList>
-                }
+                
                 </FoodNotRecommended>
             </PersonalInfoWrapper>
         

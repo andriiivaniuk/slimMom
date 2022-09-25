@@ -57,6 +57,9 @@ export const RegisterForm = () => {
     }
 
     useEffect(() => {
+        if (userInfo.userLogged) {
+            navigate("/");
+        }
         setFetching(false);
     }, [userInfo]);
 

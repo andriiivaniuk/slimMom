@@ -21,6 +21,7 @@ const userInfoReducer = (state = {}, action) => {
             }
 
         case SET_LOGGED_USER_INFO:
+            const userData = action.payload.data.user.userData;
             return {
                 ...state,
                 user: action.payload.data.user,
@@ -30,7 +31,13 @@ const userInfoReducer = (state = {}, action) => {
                     refreshToken: action.payload.data.refreshToken,
                     sid: action.payload.data.sid
                 },
-                userLogged: true
+                userLogged: true,
+                entryInfoExist: 
+                    userData.weight === 0 &&
+                    userData.dailyRate === 0 &&
+                    userData.age === 0 ? 
+                    false : true
+
             }
 
         case SET_LOGGED_USER_DAY_DATA:
@@ -56,7 +63,9 @@ const userInfoReducer = (state = {}, action) => {
                 loginData: {},
                 userLogged: false,
                 todaySummary: {},
-                user: {}
+                user: {},
+                entryInfoExist: false,
+                lastDailyIntakeData: {}
             }
 
         case REGISTRATION_FAIL:
@@ -65,7 +74,9 @@ const userInfoReducer = (state = {}, action) => {
                 loginData: {},
                 userLogged: false,
                 todaySummary: {},
-                user: {}
+                user: {},
+                entryInfoExist: false,
+                lastDailyIntakeData: {}
             }
         case GET_DAILY_KCAL_GUEST_FAIL: 
             return {

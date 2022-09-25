@@ -48,6 +48,7 @@ export const fetchUserDailyKcalInfo = (formInfo, userId, token) => {
             .then(result => {
                 console.log(result);
                 dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+                dispatch(getDailyKcalInfo(result));
             })
             .catch(error => {
                 alert(error.response.data.message);
@@ -213,7 +214,6 @@ export const fetchLogout = (token) => {
             }
         })
         .then(result => {
-            console.log(result);
             dispatch(executeLogoutLocally());
         })
         .catch(error => {

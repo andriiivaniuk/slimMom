@@ -74,7 +74,7 @@ export const Diary = () => {
         if (!isUserLogged) {
             navigate("/");
         }
-    }, [])
+    }, [isUserLogged])
 
     useEffect(() => {
         setIsSearching(false);
@@ -122,6 +122,8 @@ export const Diary = () => {
 
     useEffect(() => {
         setIsChangingFoodInfo(false);
+        searchInputRef.current.value = "";
+        gramsInputRef.current.value = "";
     }, [eatenProducts]);
 
     const handleDeleteFoodClick = (productId, productName) => {

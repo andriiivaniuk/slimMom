@@ -4,6 +4,8 @@ import { useNavigate } from "react-router"
 
 import { disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
+import { useSelector } from "react-redux";
+
 import withLoader from "../../hocs/withLoader/withLoader";
 
 import { 
@@ -25,25 +27,24 @@ import {
 import { StartLosingWeighBtn } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
 import closeCross from "../../assets/ModalWindow/closeCross.svg";
-import { useSelector } from "react-redux";
 
 export const ModalWindow = ({setModalVisibility, children}) => {
 
     const navigate = useNavigate();
 
+    const entryInfoExist = useSelector(state => state.userInfo.entryInfoExist);
     const userLogged = useSelector(state => state.userInfo.userLogged);
 
-    const dailyKcal = useSelector(state => 
-        !userLogged ? 
-        state.userInfo.lastDailyIntakeData.dailyKcal : 
-        state.userInfo.user.userData.dailyRate
-    );
-
-    const notAllowedFoodArr = useSelector(state => 
-        !userLogged ? 
-        state.userInfo.lastDailyIntakeData.notAllowedFoods :
-        state.userInfo.user.userData.notAllowedProducts
-    );
+    const userData = useSelector(state => {
+        if (userLogged) {
+            if (entryInfoExist) {
+                return state.userInfo.user.userData;
+            }
+            return state.userInfo.lastDailyIntakeData;
+        } else {
+            return state.userInfo.lastDailyIntakeData;
+        }
+    });
 
     const [topOffset, setTopOffset] 
         = useState(Math.abs(document.querySelector("body").getBoundingClientRect().top));
@@ -101,7 +102,7 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                     </ModalTitle>
                     <ModalEnergyValSet>
                         <ModalEnergyVal>
-                            {dailyKcal}
+                            {userData.dailyKcal}
                         </ModalEnergyVal>
                         <ModalEnergyUnitsVal>
                             kkal
@@ -112,11 +113,13 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                             Foods you should not eat
                         </FoodsToAvoidTitle>
                         <BadFoodsList>
-                            {notAllowedFoodArr.map((item, index) => {
+                            { 
+                            userData.notAllowedFoods.map((item, index) => {
                                 return <BadFoodItem key = {index}>
                                     {item}
                                 </BadFoodItem>
-                            })}
+                            })
+                            }
                         </BadFoodsList>
                     </FoodsToAvoidSet>
                     <StartLosingWeighBtn onClick={handleModalBtnClick}>

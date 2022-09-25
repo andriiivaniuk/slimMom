@@ -128,6 +128,14 @@ export const DailyCaloriesForm = () => {
         }
     }
 
+    const checkDataForModal = () => {
+        if (isModalOpen && lastDailyIntakeData){
+            return true;
+        } else {
+            return false;
+        }
+     }
+
     return (
         <section>
             <FormWrapper>
@@ -204,7 +212,7 @@ export const DailyCaloriesForm = () => {
                     </StartLosingWeighBtn>
                 </ButtonArea>
             </FormWrapper>
-            {isModalOpen && lastDailyIntakeData && <ModalWindow setModalVisibility={setIsModalOpen} loading = {loading} />}
+            {checkDataForModal() && <ModalWindow setModalVisibility={setIsModalOpen} loading = {loading} />}
         </section>
     )
 }
