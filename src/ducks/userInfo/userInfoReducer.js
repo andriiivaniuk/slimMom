@@ -4,7 +4,9 @@ import {
     SET_LOGGED_USER_DAY_DATA,
     SET_LAST_FOOD_SEARCH_RESULT,
     CLEAN_LAST_FOOD_SEARCH_RESULT,
-    EXECUTE_LOGOUT_LOCALLY
+    EXECUTE_LOGOUT_LOCALLY,
+    REGISTRATION_FAIL,
+    GET_DAILY_KCAL_GUEST_FAIL
 } from "./userInfoActions";
 
 const userInfoReducer = (state = {}, action) => {
@@ -57,6 +59,19 @@ const userInfoReducer = (state = {}, action) => {
                 user: {}
             }
 
+        case REGISTRATION_FAIL:
+            return {
+                ...state,
+                loginData: {},
+                userLogged: false,
+                todaySummary: {},
+                user: {}
+            }
+        case GET_DAILY_KCAL_GUEST_FAIL: 
+            return {
+                ...state,
+                lastDailyIntakeData: null
+            }
         default:
             return state;
     }

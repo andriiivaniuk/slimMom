@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useSelector } from "react-redux";
 
@@ -19,7 +19,8 @@ import {
     FoodNotRecommended,
     FoodNotRecommendedTitle,
     FoodNotRecommendedList,
-    FoodNotRecommendedItem
+    FoodNotRecommendedItem,
+    NoUserDataPresentDietText
 } from "./PersonalInfoStyled";
 
 import { getTodayDateObj } from "../../utils/utils";
@@ -31,6 +32,7 @@ const dailySummaryLineTitles = ["Left", "Consumed", "Daily rate", "n% of normal"
 export const PersonalInfo = () => {
 
     const dispatch = useDispatch();
+    const [userDataPresent, setUserDataPresent] = useState(null);
 
     const dayInfo = useSelector(
         state => 
@@ -39,12 +41,22 @@ export const PersonalInfo = () => {
         );
     const token = useSelector(state => state.userInfo.loginData.accessToken);
     const foodNotRec = useSelector(state => state.userInfo.user.userData.notAllowedProducts);
+    const userData = useSelector(state => state.userInfo.user.userData);
 
     useEffect(() => {
-        if (Object.keys(dayInfo).length === 0 ) {
+        if (userData.weight === 0 && userData.desiredWeight === 0 && userData.dailyRate === 0) {
+            setUserDataPresent(false);
+        } else {
+            setUserDataPresent(true);
             dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
         }
-    }, [])
+    }, []);
+
+    // useEffect(() => {
+    //     if (userDataPresent && Object.keys(dayInfo).length === 0 ) {
+    //         dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
+    //     }
+    // }, []);
 
     return (
         
@@ -78,15 +90,22 @@ export const PersonalInfo = () => {
                     <FoodNotRecommendedTitle>
                         Food not recommended
                     </FoodNotRecommendedTitle>
+                {!userDataPresent ?
+                    <NoUserDataPresentDietText>
+                        Bad food for you will be shown here <br/>
+                        Please send your info via Calculator form
+                    </NoUserDataPresentDietText>
+                    :
                     <FoodNotRecommendedList>
                         {foodNotRec.map((food, index) => {
                             if (index < 8) return (
-                                <FoodNotRecommendedItem key = {food}>
+                                <FoodNotRecommendedItem key={food}>
                                     {food}
                                 </FoodNotRecommendedItem>
                             )
                         })}
-                    </FoodNotRecommendedList>
+                </FoodNotRecommendedList>
+                }
                 </FoodNotRecommended>
             </PersonalInfoWrapper>
         

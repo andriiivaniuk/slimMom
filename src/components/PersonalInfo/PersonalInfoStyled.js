@@ -97,3 +97,9 @@ export const FoodNotRecommendedList = styled.ul`
 export const FoodNotRecommendedItem = styled.li`
     display: block;
 `
+
+export const NoUserDataPresentDietText = styled.span`
+    display: block;
+    padding-top: 30px;
+    font-weight: 300;
+`

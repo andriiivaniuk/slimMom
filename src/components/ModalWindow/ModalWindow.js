@@ -31,10 +31,22 @@ export const ModalWindow = ({setModalVisibility, children}) => {
 
     const navigate = useNavigate();
 
-    const dailyKcal = useSelector(state => state.userInfo.lastDailyIntakeData.dailyKcal);
-    const notAllowedFoodArr = useSelector(state => state.userInfo.lastDailyIntakeData.notAllowedFoods);
+    const userLogged = useSelector(state => state.userInfo.userLogged);
 
-    const [topOffset, setTopOffset] = useState(Math.abs(document.querySelector("body").getBoundingClientRect().top));
+    const dailyKcal = useSelector(state => 
+        !userLogged ? 
+        state.userInfo.lastDailyIntakeData.dailyKcal : 
+        state.userInfo.user.userData.dailyRate
+    );
+
+    const notAllowedFoodArr = useSelector(state => 
+        !userLogged ? 
+        state.userInfo.lastDailyIntakeData.notAllowedFoods :
+        state.userInfo.user.userData.notAllowedProducts
+    );
+
+    const [topOffset, setTopOffset] 
+        = useState(Math.abs(document.querySelector("body").getBoundingClientRect().top));
 
     const keyboardListener = (e) => {
         if (e.key === "Escape") {
@@ -57,6 +69,15 @@ export const ModalWindow = ({setModalVisibility, children}) => {
         if (e.target?.id === "modalBackground" || e.target?.id === "modalCloseBtn") {
             closeModal();
         }
+    }
+
+    const handleModalBtnClick = () => {
+        if (!userLogged) {
+            navigate("/register")
+        } else {
+            navigate("/diary")
+        }
+        
     }
 
     useEffect(() => {
@@ -98,7 +119,7 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                             })}
                         </BadFoodsList>
                     </FoodsToAvoidSet>
-                    <StartLosingWeighBtn onClick={() => navigate("/register")}>
+                    <StartLosingWeighBtn onClick={handleModalBtnClick}>
                         Start losing weight
                     </StartLosingWeighBtn>
                 </ModalContentWrapper>

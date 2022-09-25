@@ -1,6 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchRegisterUser } from "../../ducks/userInfo/userInfoActions";
+
+import { ErrorMessage } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
+import Spinner from "../Spinner/Spinner";
 
 import { 
     RegisterFormWrapper 
@@ -20,11 +27,15 @@ import {
     InputTitleLabel
 } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
-import { ErrorMessage } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
 export const RegisterForm = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const userInfo = useSelector(state => state.userInfo);
+
+    const [fetching, setFetching] = useState(false);
 
     const [isEmailOk, setIsEmailOk] = useState(true);
     const [isPassOk, setIsPassOk] = useState(true);
@@ -35,7 +46,27 @@ export const RegisterForm = () => {
     const passRef = useRef();
 
     const registerClickHandler = () => {
+        if (checkInputData()) {
+            setFetching(true);
+            dispatch(fetchRegisterUser({
+                email: emailRef.current.value,
+                password: passRef.current.value,
+                username: nameRef.current.value
+            }))
+        }
+    }
 
+    useEffect(() => {
+        setFetching(false);
+    }, [userInfo]);
+
+    const checkInputData = () => {
+        if (nameRef.current.value !== "" && emailRef.current.value !== ""
+            && passRef.current.value !== "" && isEmailOk && isNameOk && isPassOk) {
+            return true
+        } else {
+            return false
+        }
     }
 
     const checkEmail = () => {
@@ -110,6 +141,9 @@ export const RegisterForm = () => {
                     </RegisterBtn>
                 </AuthButtonSet>
             </RegisterFormWrapper>
+            {
+                fetching && <Spinner />
+            }
         </div>
     )
 }

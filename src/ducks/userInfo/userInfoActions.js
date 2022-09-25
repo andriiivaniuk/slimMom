@@ -7,17 +7,47 @@ export const SET_LOGGED_USER_DAY_DATA = "SET_LOGGED_USER_DAY_DATA";
 export const SET_LAST_FOOD_SEARCH_RESULT = "SET_LAST_FOOD_SEARCH_RESULT";
 export const CLEAN_LAST_FOOD_SEARCH_RESULT = "CLEAN_LAST_FOOD_SEARCH_RESULT";
 export const EXECUTE_LOGOUT_LOCALLY = "EXECUTE_LOGOUT_LOCALLY";
+export const REGISTRATION_FAIL = "REGISTRATION_FAIL";
+export const GET_DAILY_KCAL_GUEST_FAIL = "GET_DAILY_KCAL_GUEST_FAIL";
 
 export const fetchDailyKcalInfo = (formInfo) => {
     return dispatch => {
         axios
             .post(`https://slimmom-backend.goit.global/daily-rate`, formInfo, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin' : '*',
+                    
                 }
             })
             .then(result => {
                 dispatch(getDailyKcalInfo(result))
+            })
+            .catch(error => {
+                alert(error.response.data.message);
+                dispatch(getDailyKcalGuestFail());
+            })
+    }
+}
+
+export const getDailyKcalGuestFail = () => {
+    return {
+        type: GET_DAILY_KCAL_GUEST_FAIL
+    }
+}
+
+export const fetchUserDailyKcalInfo = (formInfo, userId, token) => {
+    return dispatch => {
+        axios
+            .post(`https://slimmom-backend.goit.global/daily-rate/${userId}`, formInfo, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+            .then(result => {
+                console.log(result);
+                dispatch(fetchLoggedUserDayInfo(getTodayDateObj(), token));
             })
             .catch(error => {
                 alert(error.response.data.message);
@@ -76,8 +106,13 @@ export const cleanLastFoodSearchResult = () => {
     }
 }
 
+export const signalRegistrationError = () => {
+    return {
+        type: REGISTRATION_FAIL
+    }
+}
+
 export const fetchLoggedUserDayInfo = (date, token) => {
-    console.log(date);
     return dispatch => {
         axios
         .post(
@@ -183,6 +218,29 @@ export const fetchLogout = (token) => {
         })
         .catch(error => {
             alert(error.response.data.message);
+        })
+    }
+}
+
+export const fetchRegisterUser = (formInfo) => {
+    return dispatch => {
+        axios
+        .post(`https://slimmom-backend.goit.global/auth/register/`, formInfo, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+        .then(result => {
+            console.log(result);
+            dispatch(fetchLogin({
+                email: formInfo.email,
+                password: formInfo.password
+            }));
+        })
+        .catch(error => {
+            alert(error.response.data.message);
+            dispatch(signalRegistrationError());
         })
     }
 }

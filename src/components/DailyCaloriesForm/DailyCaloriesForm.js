@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModalWindow from "../ModalWindow/ModalWindow";
 
-import { fetchDailyKcalInfo } from "../../ducks/userInfo/userInfoActions";
+import { 
+    fetchDailyKcalInfo,
+    fetchUserDailyKcalInfo
+} from "../../ducks/userInfo/userInfoActions";
 
 import {
     FormWrapper,
@@ -28,7 +31,10 @@ export const DailyCaloriesForm = () => {
     const [bloodType, setBloodType] = useState(1);
 
     const [loading, setLoading] = useState(false);
+
     const userInfo = useSelector(state => state.userInfo);
+    const token = useSelector(state => state.userInfo?.loginData?.accessToken);
+    const lastDailyIntakeData = useSelector(state => state.userInfo.lastDailyIntakeData);
 
     const ageRef = useRef();
     const currentWeightRef = useRef();
@@ -44,7 +50,11 @@ export const DailyCaloriesForm = () => {
 
     useEffect(() => {
         setLoading(false);
-    }, [userInfo])
+    }, [userInfo]);
+
+    useEffect(() => {
+        setLoading(false);
+    }, [lastDailyIntakeData])
 
     const checkAge = () => {
         const age = ageRef.current.value;
@@ -106,8 +116,14 @@ export const DailyCaloriesForm = () => {
             }
 
             setLoading(true);
-            dispatch(fetchDailyKcalInfo(formInfo));
 
+            if (userInfo.userLogged === true) {
+                dispatch(fetchUserDailyKcalInfo(formInfo, userInfo.user?.id, token));
+                setIsModalOpen(true);
+                return;
+            }
+
+            dispatch(fetchDailyKcalInfo(formInfo));
             setIsModalOpen(true);
         }
     }
@@ -188,7 +204,7 @@ export const DailyCaloriesForm = () => {
                     </StartLosingWeighBtn>
                 </ButtonArea>
             </FormWrapper>
-            {isModalOpen && <ModalWindow setModalVisibility={setIsModalOpen} loading = {loading} />}
+            {isModalOpen && lastDailyIntakeData && <ModalWindow setModalVisibility={setIsModalOpen} loading = {loading} />}
         </section>
     )
 }

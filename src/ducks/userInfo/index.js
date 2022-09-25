@@ -5,6 +5,9 @@ import {
     fetchSearchedFood,
     cleanLastFoodSearchResult,
     deleteFoodFromServer,
+    fetchUserDailyKcalInfo,
+    executeLogoutLocally,
+    getDailyKcalGuestFail,
     fetchLogout
 } from "./userInfoActions";
 
@@ -18,5 +21,8 @@ export {
     cleanLastFoodSearchResult,
     deleteFoodFromServer,
     fetchLogout,
+    fetchUserDailyKcalInfo,
+    executeLogoutLocally,
+    getDailyKcalGuestFail,
     userInfoReducer,
 };
