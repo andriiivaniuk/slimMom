@@ -45,7 +45,6 @@ export const PersonalInfo = () => {
             state.userInfo?.lastDailyIntakeData?.notAllowedFoods :
             state.userInfo.user?.userData?.notAllowedProducts
         );
-    const userData = useSelector(state => state.userInfo.user.userData);
 
     useEffect(() => {
         if (entryInfoExist){
