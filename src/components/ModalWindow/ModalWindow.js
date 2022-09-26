@@ -4,9 +4,11 @@ import { useNavigate } from "react-router"
 
 import { disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import withLoader from "../../hocs/withLoader/withLoader";
+
+import {executeLogoutLocally} from "../../ducks/userInfo";
 
 import { 
     ModalBackground,
@@ -31,20 +33,23 @@ import closeCross from "../../assets/ModalWindow/closeCross.svg";
 export const ModalWindow = ({setModalVisibility, children}) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
     const entryInfoExist = useSelector(state => state.userInfo.entryInfoExist);
     const userLogged = useSelector(state => state.userInfo.userLogged);
 
-    const userData = useSelector(state => {
-        if (userLogged) {
-            if (entryInfoExist) {
-                return state.userInfo.user.userData;
-            }
-            return state.userInfo.lastDailyIntakeData;
-        } else {
-            return state.userInfo.lastDailyIntakeData;
-        }
-    });
+    const userData = useSelector(state =>  state.userInfo.lastDailyIntakeData );
+
+    //     if (userLogged) {
+    //         if (entryInfoExist) {
+    //             return state.userInfo.user.userData;
+    //         }
+    //         return state.userInfo.lastDailyIntakeData;
+    //     } else {
+    //         return state.userInfo.lastDailyIntakeData;
+    //     }
+    // });
 
     const [topOffset, setTopOffset] 
         = useState(Math.abs(document.querySelector("body").getBoundingClientRect().top));
@@ -60,6 +65,10 @@ export const ModalWindow = ({setModalVisibility, children}) => {
         document.removeEventListener("keydown", keyboardListener);
         window.removeEventListener("resize", resizeListener);
         setModalVisibility(false);
+        if (!userLogged) {
+            dispatch(executeLogoutLocally());
+        }
+
     }
 
     const resizeListener = () => {
@@ -113,8 +122,8 @@ export const ModalWindow = ({setModalVisibility, children}) => {
                             Foods you should not eat
                         </FoodsToAvoidTitle>
                         <BadFoodsList>
-                            { 
-                            userData.notAllowedFoods.map((item, index) => {
+                            {
+                                userData.notAllowedFoods && userData.notAllowedFoods.map((item, index) => {
                                 return <BadFoodItem key = {index}>
                                     {item}
                                 </BadFoodItem>
