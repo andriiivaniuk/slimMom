@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-import logo from "./../../assets/Header/logo.svg"
+import logo from "./../../assets/HeaderAssets/logo.svg"
 
 import { 
     LogoWrapper,
