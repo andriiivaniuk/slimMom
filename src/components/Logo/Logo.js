@@ -9,8 +9,6 @@ import {
     LogoTitle,
     SlimWord,
     MomWord,
-
-
 } from "./LogoStyled";
 
 export const Logo = () => {

@@ -28,7 +28,7 @@ import {
 
 import { StartLosingWeighBtn } from "../DailyCaloriesForm/DailyCaloriesFormStyled";
 
-import closeCross from "../../assets/ModalWindow/closeCross.svg";
+import closeCross from "../../assets/ModalWindowAssets/closeCross.svg";
 
 export const ModalWindow = ({setModalVisibility, children}) => {
 

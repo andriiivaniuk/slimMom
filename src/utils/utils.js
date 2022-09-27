@@ -1,17 +1,20 @@
 export const getTodayDateString = (deviderChar) => {
-    const date = new Date(Date.now());
+    const {day, month, year} = createDateVars();
 
-    const month = (String(date.getMonth() + 1)).length < 2 ? `0${date.getMonth() + 1}`
-    : date.getMonth() + 1;
-
-    const day = (String(date.getDate())).length < 2 ? `0${date.getDate()}`
-    : date.getDate();
-
-    return day + deviderChar + month + deviderChar + date.getFullYear();
+    return day + deviderChar + month + deviderChar + year;
 }
 
 export const getTodayDateObj = () => {
+    const {day, month, year} = createDateVars();
+
+    return {
+        date: `${year}-${month}-${day}`
+    }
+}
+
+const createDateVars = () => {
     const date = new Date(Date.now());
+    const year = date.getFullYear();
 
     const month = (String(date.getMonth() + 1)).length < 2 ? `0${date.getMonth() + 1}`
     : date.getMonth() + 1;
@@ -20,7 +23,9 @@ export const getTodayDateObj = () => {
     : date.getDate();
 
     return {
-        date: `${date.getFullYear()}-${month}-${day}`
+        year: year,
+        month: month,
+        day: day
     }
 }
 

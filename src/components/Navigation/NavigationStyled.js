@@ -32,8 +32,6 @@ export const LoggedWrapper = styled.div`
     letter-spacing: 0.04em;
     align-items: center;
 
-    //background-color: aliceblue;
-
     @media (max-width: 768px) {
         justify-content: space-between;
     }

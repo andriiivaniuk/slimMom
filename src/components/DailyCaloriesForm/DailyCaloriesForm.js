@@ -129,12 +129,8 @@ export const DailyCaloriesForm = () => {
     }
 
     const checkDataForModal = () => {
-        if (isModalOpen && lastDailyIntakeData){
-            return true;
-        } else {
-            return false;
-        }
-     }
+        return (isModalOpen && lastDailyIntakeData)
+    }
 
     return (
         <section>

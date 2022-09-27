@@ -26,7 +26,7 @@ import {
 
 import { RightSideBar } from "../RightSideBar/RightSideBar";
 
-import menuBtn from "../../assets/Header/menuBtn.svg"
+import menuBtn from "../../assets/HeaderAssets/menuBtn.svg"
 
 export const Navigation = () => {
 

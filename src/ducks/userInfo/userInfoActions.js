@@ -120,7 +120,6 @@ export const fetchLoggedUserDayInfo = (date, token) => {
             `https://slimmom-backend.goit.global/day/info`, date,  {
                 headers: {
                     'Access-Control-Allow-Origin' : '*',
-                    //'Content-Type': 'application/json',
                     'Authorization': token
                 }
             }
@@ -206,7 +205,7 @@ export const executeLogoutLocally = () => {
 export const fetchLogout = (token) => {
     return dispatch => {
         axios
-        .post(`https://slimmom-backend.goit.global/auth/logout/`, {token: token}, {
+        .post(`https://slimmom-backend.goit.global/auth/logout/`, {}, {
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json',

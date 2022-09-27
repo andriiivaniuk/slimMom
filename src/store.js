@@ -34,7 +34,6 @@ const tryToGetStoreFromStorage = () => {
 
 const getInitialStore = () => {
     return {
-        init: {},
         userInfo: tryToGetStoreFromStorage()
     }
 }

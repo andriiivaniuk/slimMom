@@ -38,8 +38,8 @@ import {
 
 import { getTodayDateString, getTodayDateObj } from "../../utils/utils";
 
-import calendarImg from "../../assets/Diary/calendar.svg";
-import deleteBtn from "../../assets/Diary/deleteItemBtn.svg"
+import calendarImg from "../../assets/DiaryAssets/calendar.svg";
+import deleteBtn from "../../assets/DiaryAssets/deleteItemBtn.svg"
 
 
 export const Diary = () => {

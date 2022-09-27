@@ -1,7 +1,6 @@
 import React from "react";
 
 import Logo from "../Logo/Logo";
-import UserInfo from "../UserInfo/UserInfo";
 import Navigation from "../Navigation/Navigation";
 
 import { 
@@ -15,7 +14,6 @@ export const Header = () => {
             <HeaderWrapper>
                 <Logo />
                 <VerticalDevider />
-                <UserInfo/>
                 <Navigation/>
             </HeaderWrapper>
         </header>
