@@ -86,9 +86,13 @@ export const AddMealButton = styled.button`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    opacity: ${props => props.canAdd ? 
+        `1` : `0.7` };
+    transition: 0.2s;
 
     :hover {
-        box-shadow: 0px 4px 10px rgba(252, 132, 45, 0.5);
+        box-shadow: ${props => props.canAdd ? 
+        `0px 4px 10px rgba(252, 132, 45, 0.5)` : `none` }
     }
 `
 export const PlusSign = styled.span`

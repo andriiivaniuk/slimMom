@@ -107,7 +107,7 @@ export const Navigation = () => {
                 </UnloggedNavWrapper>
             }
                 {
-                    overlayMenuShown && 
+                    overlayMenuShown && isUserLogged &&
                     <RightSideBar
                     handleHamburgerClick = {handleHamburgerClick}/>
                 }

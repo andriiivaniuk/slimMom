@@ -41,6 +41,8 @@ import { getTodayDateString, getTodayDateObj } from "../../utils/utils";
 import calendarImg from "../../assets/DiaryAssets/calendar.svg";
 import deleteBtn from "../../assets/DiaryAssets/deleteItemBtn.svg"
 
+let lastFoodNameInputTime = null;
+let searchTimeOut = null;
 
 export const Diary = () => {
 
@@ -74,7 +76,7 @@ export const Diary = () => {
         if (!isUserLogged) {
             navigate("/");
         }
-    }, [isUserLogged])
+    }, [isUserLogged]);
 
     useEffect(() => {
         setIsSearching(false);
@@ -85,14 +87,19 @@ export const Diary = () => {
     }, [productToAdd])
 
     const handleInputChange = () => {
-        const input = searchInputRef.current.value;
-        if (input.length > 0) {
-            setIsSearching(true);
-            setIsLoadingFood(true);
-            dispatch(fetchSearchedFood(input, token));
-        } else {
-            setIsSearching(false);
-        }
+        searchTimeOut && clearTimeout(searchTimeOut);
+
+        searchTimeOut = setTimeout(() => {
+            const input = searchInputRef.current.value;
+            if (input.length > 0) {
+                setIsSearching(true);
+                setIsLoadingFood(true);
+                dispatch(fetchSearchedFood(input, token));
+            } else {
+                setIsSearching(false);
+            }
+        }, 500);
+
     }
 
     const handleGramsChange = () => {
@@ -113,6 +120,10 @@ export const Diary = () => {
                 productId: productToAdd.id,
                 weight: Number(gramsInputRef.current.value)
             }, token));
+            setProductToAdd({
+                name: null,
+                id: null
+            })
         }
     }
 
@@ -164,7 +175,9 @@ export const Diary = () => {
                             {!isGramsOk && "bad value"}
                         </ErrorPlaceholder>
                 </GramsInputSet>
-                <AddMealButton onClick={handleAddMealButtonClick}>
+                <AddMealButton 
+                    onClick={handleAddMealButtonClick}
+                    canAdd = {productToAdd.id}>
                     <PlusSign>
                         +
                     </PlusSign>

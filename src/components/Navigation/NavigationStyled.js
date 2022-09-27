@@ -76,12 +76,14 @@ export const RegisterButton = styled.button`
 export const DiaryButton = styled.button`
     cursor: pointer;
     color: ${GREY_LABEL_INPUT};
+    transition: 0.15s;
     :hover{
         color: ${MODAL_LIST_TITLE_COLOR};
     }
 `
 export const CalculatorButon = styled.button`
     cursor: pointer;
+    transition: 0.15s;
     color: ${GREY_LABEL_INPUT};
     :hover{
         color: ${MODAL_LIST_TITLE_COLOR};
@@ -120,6 +122,11 @@ export const LoggedUserExit = styled.button`
     cursor: pointer;
     text-transform: none;
     color: ${GREY_LABEL_INPUT};
+    transition: 0.13s;
+
+    :hover{
+        color: black;
+    }
 `
 
 export const VerticalDeviderNav = styled.div`

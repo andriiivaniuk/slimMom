@@ -1,12 +1,10 @@
 export const getTodayDateString = (deviderChar) => {
     const {day, month, year} = createDateVars();
-
     return day + deviderChar + month + deviderChar + year;
 }
 
 export const getTodayDateObj = () => {
     const {day, month, year} = createDateVars();
-
     return {
         date: `${year}-${month}-${day}`
     }

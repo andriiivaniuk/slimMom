@@ -73,6 +73,7 @@ export const BloodTypeDigit = styled.span`
     left: 21px;
     top: 0;
     position: absolute;
+    transition: 0.2s;
 `
 export const BloodTypeSelectedDot = styled.div`
     height: 10px;
